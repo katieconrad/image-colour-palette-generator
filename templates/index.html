@@ -1,0 +1,49 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block title %}Colour Palette Generator{% endblock %}
+
+{% block content %}
+
+<h1>Colour Palette Generator</h1>
+
+<div class="image">
+  <img src="{{ image }}">
+</div>
+
+{% if image != "" %}
+<div class="colours">
+  <div class="row">
+    <div class="col-sm-1 offset-sm-1"></div>
+    {% for i in range(0, new_row) %}
+      <div class="swatch col-sm-2" style="background-color:rgb({{ df.iloc[i]['R'] }},{{ df.iloc[i]['G'] }},{{ df.iloc[i]['B'] }}">
+        <p>RGB: {{ df.iloc[i]['R'] }}, {{ df.iloc[i]['G'] }}, {{ df.iloc[i]['B'] }}</p>
+        <p>Hex: {{ df.iloc[i]["Hex"] }}</p>
+      </div>
+    {% endfor %}
+    <div class="col-sm-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-1 offset-sm-1"></div>
+    {% for i in range(new_row, df|length) %}
+      <div class="swatch col-sm-2" style="background-color:rgb({{ df.iloc[i]['R'] }},{{ df.iloc[i]['G'] }},{{ df.iloc[i]['B'] }}">
+        <p>RGB: {{ df.iloc[i]['R'] }}, {{ df.iloc[i]['G'] }}, {{ df.iloc[i]['B'] }}</p>
+        <p>Hex: {{ df.iloc[i]["Hex"] }}</p>
+      </div>
+    {% endfor %}
+    <div class="col-sm-1"></div>
+  </div>
+</div>
+{% endif %}
+
+<div class="upload-form">
+  {{ wtf.quick_form(form) }}
+</div>
+
+{% endblock %}
